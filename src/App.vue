@@ -1,6 +1,7 @@
 <template>
   <div class="p-8">
       <div class="flex justify-around">
+        <!-- Rather than one huge giant list, I had the list ids be buttons you could select to view the ones in that list, which seemed easier to use and grok than a whole big list of items -->
         <button 
           v-for="group in state.list" :key="group.listId" 
           @click="state.selectedList = group.listId" 
@@ -10,6 +11,7 @@
         </button>
       </div>
       <hr class="my-2">
+      <!-- I added the transition to ease the appearance of the large lists changing over -->
     <transition name="fade" mode="out-in">
       <div class="flex flex-wrap justify-center" v-if="state.selectedList != null" :key="state.selectedList">
         <p v-for="item in state.list[state.selectedList].items" :key="item.id" 
@@ -36,6 +38,7 @@
 import { onMounted, reactive } from 'vue'
 
 const getInt = (string) => {
+  //This was needed to sort the items correctly, since it would put 31 after 300, for example, if you just compared the strings
   return parseInt(string.match(/(\d+)/)[0])
 }
 
@@ -43,6 +46,7 @@ export default {
   name: 'App',
   setup(){
     const isActive = (num) => {
+      //Controls the classes on the active button, tried to use shadow to accentuate it so it wasn't just a color change
       if (state.selectedList == num) return ['text-white','bg-green-400', 'shadow-lg']
       else return ['text-black', 'bg-white', 'shadow-none']
     }
